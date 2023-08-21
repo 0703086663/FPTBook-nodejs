@@ -1,0 +1,39 @@
+<section class="py-5">
+  <div class="px-4 px-lg-5">
+    <h2 class="my-1 text-center h2">Bill Management</h2>
+    {{#if messages.error}}
+      <div class="alert alert-danger" role="alert">
+        {{messages.error}}
+      </div>
+    {{/if}}
+    {{#if messages.success}}
+      <div class="alert alert-success" role="alert">
+        {{messages.success}}
+      </div>
+    {{/if}}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Books</th>
+          <th>User</th>
+          <th>Total Amount</th>
+          <th>Created At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each bills}}
+          <tr>
+            <form action="/admin/billUpdate/{{_id}}" method="POST">
+              <td>{{_id}}</td>
+              <td>{{#books}}{{this.title}}, {{/books}}</td>
+              <td>{{user.name}}</td>
+              <td>{{formatCurrency totalAmount}}</td>
+              <td>{{moment createdAt format="HH:mm - DD/MM/yyyy"}}</td>
+            </form>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</section>

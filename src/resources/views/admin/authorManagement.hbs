@@ -1,0 +1,82 @@
+<section class="py-5">
+  <div class="px-4 px-lg-5">
+    <h2 class="my-1 text-center h2">Author management</h2>
+    {{#if messages.error}}
+      <div class="alert alert-danger" role="alert">
+        {{messages.error}}
+      </div>
+    {{/if}}
+    {{#if messages.success}}
+      <div class="alert alert-success" role="alert">
+        {{messages.success}}
+      </div>
+    {{/if}}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Created at</th>
+          <th>Updated at</th>
+          <th><button class="btn btn-success" id="addRow">+</button></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="display: none;" id="newRow">
+          <form action="/admin/authorCreate" method="POST">
+            <td><input
+                class="form-control"
+                type="text"
+                name="name"
+                required
+              /></td>
+            <td><input class="form-control" type="text" readonly /></td>
+            <td><input class="form-control" type="text" readonly /></td>
+            <td><button class="btn btn-success">Create</button></td>
+          </form>
+        </tr>
+        {{#each authors}}
+          <form action="/admin/authorUpdate/{{this._id}}" method="POST">
+            <tr>
+              <td><input
+                  class="form-control"
+                  type="text"
+                  name="name"
+                  value="{{this.name}}"
+                  required
+                /></td>
+              <td><input
+                  class="form-control"
+                  type="text"
+                  value="{{moment this.createdAt format="HH:mm - DD/MM/yyyy"}}"
+                  readonly
+                /></td>
+              <td><input
+                  class="form-control"
+                  type="text"
+                  value="{{moment this.updatedAt format="HH:mm - DD/MM/yyyy"}}"
+                  readonly
+                /></td>
+              <td>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a
+                  href="/admin/authorDelete/{{this._id}}"
+                  role="button"
+                  class="btn btn-danger delete-btn"
+                >Delete</a>
+              </td>
+            </tr>
+          </form>
+        {{/each}}
+
+      </tbody>
+    </table>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() { const
+      addRowButton = document.getElementById('addRow'); const newRow =
+      document.getElementById('newRow'); const tbody =
+      document.querySelector('table tbody');
+      addRowButton.addEventListener('click', function(event) {
+      event.preventDefault(); newRow.style.display = 'table-row'; }); });
+    </script>
+  </div>
+</section>

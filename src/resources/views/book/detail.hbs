@@ -1,0 +1,34 @@
+<section class="py-5">
+  <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 align-items-center">
+      <div class="col-md-6">
+        <img
+          src="{{book.image}}"
+          alt="{{book.title}} Cover"
+          class="img-fluid rounded shadow-lg"
+          style="max-width: 300px; max-height: 400px;"
+        />
+      </div>
+      <div class="col-md-6">
+        <h1 class="display-4 fw-bolder">{{book.title}}</h1>
+        <p class="lead">by {{book.author.name}}</p>
+        <p class="mb-4">Published:
+          {{moment book.createdAt format="MMMM DD, YYYY"}}</p>
+        <p class="mb-4">Genre: Fiction</p>
+        <p class="h3 text-primary">{{formatCurrency book.price}}</p>
+        <p class="text-muted">{{#if book.available}}Status:
+            <span class="text-success">Available</span>{{else}}Status:
+            <span class="text-danger">Unavailable</span>{{/if}}</p>
+        <hr class="my-4" />
+        <div>
+          <a class="btn btn-outline-dark mt-auto mx-1" href="#">
+            <i class="bi-cart-fill"></i>
+          </a>
+          <a class="btn btn-outline-dark mt-auto mx-1" href="#">
+            <i class="bi bi-journal-plus"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

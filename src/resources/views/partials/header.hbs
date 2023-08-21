@@ -1,0 +1,69 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container px-4 px-lg-5">
+    <a class="navbar-brand" href="/">FPT Book</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    ><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+        <li class="nav-item"><a
+            class="nav-link {{#ifeq title 'Home'}}active{{/ifeq}}"
+            aria-current="page"
+            href="/"
+          >Books</a></li>
+        <li class="nav-item"><a class="nav-link {{#ifeq title 'About'}}active{{/ifeq}}" href="/about">About</a></li>
+        <li class="nav-item"><a class="nav-link {{#ifeq title 'Book Management'}}active{{/ifeq}}" href="/admin/bookManagement">Book</a></li>
+        <li class="nav-item"><a class="nav-link {{#ifeq title 'Author Management'}}active{{/ifeq}}" href="/admin/authorManagement">Author</a></li>
+        <li class="nav-item"><a class="nav-link {{#ifeq title 'Bill Management'}}active{{/ifeq}}" href="/admin/billManagement">Bill</a></li>
+      </ul>
+      <div class="d-flex mb-0">
+        <div class="input-group rounded my-2">
+          <div class="form-outline w-auto">
+            <input type="search" id="form1" class="form-control" placeholder="Search"/>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex mb-0 mx-2">
+        {{#if user}}
+        <a href="/profile">
+          <button class="btn btn-outline-dark" type="button">
+            <i class="fa-solid fa-user"></i>
+            {{user.name}}
+          </button>
+        </a>
+        {{else}}
+        <a href="/login">
+          <button class="btn btn-outline-dark" type="button">
+            Login
+          </button>
+        </a>
+        {{/if}}
+      </div>
+      <form class="d-flex mb-0">
+        <a href="/cart">
+          <button class="btn btn-outline-dark" type="button">
+            <i class="bi-cart-fill me-1"></i>
+            Cart
+            <span class="badge bg-dark text-white ms-1 rounded-pill">{{cartItemCount}}</span>
+          </button>
+        </a>
+      </form>
+    </div>
+  </div>
+</nav>
+<!-- Header-->
+{{#if noHeader}}{{else}}<header class="bg-dark py-1">
+  <div class="container px-4 px-lg-5 my-5">
+    <div class="text-center text-white">
+      <h1 class="display-4 fw-bolder">{{title}}</h1>
+      <p class="lead fw-normal text-white-50 mb-0">{{description}}</p>
+    </div>
+  </div>
+</header>
+{{/if}}

@@ -1,0 +1,58 @@
+<div class="container my-5">
+  {{#if messages.success}}
+    <div class="alert alert-success" role="alert">
+      {{messages.success}}
+    </div>
+  {{/if}}
+
+  {{#if messages.error}}
+    <div class="alert alert-danger" role="alert">
+      {{messages.error}}
+    </div>
+  {{/if}}
+
+  {{#ifeq cartTotal 0}}
+    <h1 class="text-center my-5">There's nothing here</h1>
+  {{else}}
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Book</th>
+          <th scope="col">Title</th>
+          <th scope="col">Price</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Repeat this section for each item in the cart -->
+        {{#each cartItems}}
+          <tr>
+            <td>
+              <img
+                src="{{this.image}}"
+                alt="{{this.title}} Image"
+                class="img-thumbnail"
+                width="100"
+              />
+            </td>
+            <td>{{this.title}}</td>
+            <td>{{formatCurrency this.price}}</td>
+            <td>
+              <a href="/remove-from-cart/{{this._id}}">
+                <button class="btn btn-danger">Remove</button>
+              </a>
+            </td>
+          </tr>
+        {{/each}}
+        <!-- End of item -->
+      </tbody>
+    </table>
+    <div class="text-end">
+      <h4>Total: {{formatCurrency cartTotal}}</h4>
+      <form method="post" action="/checkout">
+        <input type="hidden" name="totalAmount" value="{{cartTotal}}" />
+        <button class="btn btn-primary">Checkout</button>
+      </form>
+    </div>
+  {{/ifeq}}
+</div>
