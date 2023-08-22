@@ -8,8 +8,6 @@ const {
   mongooseToObject,
 } = require("../utils/mongoose");
 
-const { calculateCartTotal } = require("../utils/calculateCartTotal");
-
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -195,123 +193,14 @@ class HomeController {
     }
   }
 
-  async updateUser(req, res, next) {
-    try {
-      const { name, address, role, avatar } = req.body;
-      const userId = req.user._id;
-      const user = await User.findById(userId);
-
-      if (!user) {
-        req.flash("error", "User not found");
-        return res.redirect("/profile");
-      }
-
-      user.name = name;
-      user.address = address;
-      user.role = role;
-      user.avatar = avatar;
-
-      await user.save();
-
-      req.flash("success", "Profile updated successfully");
-      res.redirect("/profile");
-    } catch (error) {
-      console.error(error);
-      req.flash("error", "Failed to update profile");
-      res.redirect("/profile");
-    }
-  }
-
-  profile(req, res, next) {
-    return res.render("profile", {
-      title: "Profile",
-      user: mongooseToObject(req.user),
-    });
-  }
-
-  removeFromCart(req, res, next) {
-    const bookId = req.params.id;
-    const bookIndex = req.session.cart.indexOf(bookId);
-
-    if (bookIndex !== -1) {
-      req.session.cart.splice(bookIndex, 1);
-    }
-
-    res.redirect("/cart");
-  }
-
-  async cart(req, res, next) {
-    const cartItemIds = req.session.cart || [];
-
-    try {
-      const cartItems = await Book.find({ _id: { $in: cartItemIds } }).exec();
-      const cartTotal = await calculateCartTotal(cartItems); // Await here
-
-      res.render("cart", {
-        title: "Shopping Cart",
-        user: mongooseToObject(req.user),
-        cartItems: multipleMongooseToObject(cartItems),
-        cartTotal,
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).send("Internal Server Error");
-    }
-  }
-
-  async addToCart(req, res, next) {
-    try {
-      const bookId = req.params.id;
-
-      const book = await Book.findById(bookId);
-
-      if (!book) {
-        return res.status(404).send("Book not found");
-      }
-
-      if (!req.session.cart) {
-        req.session.cart = [];
-      }
-
-      const isBookInCart = req.session.cart.some(
-        (cartItem) => cartItem === bookId
-      );
-
-      if (!isBookInCart) {
-        req.session.cart.push(bookId);
-      }
-
-      res.redirect("/cart");
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async checkout(req, res, next) {
-    try {
-      const userId = req.user._id;
-      const cartItemIds = req.session.cart || [];
-      const books = await Book.find({ _id: { $in: cartItemIds } });
-
-      const newBill = new Bill({
-        user: userId,
-        books: books,
-        totalAmount: req.body.totalAmount,
-      });
-
-      await newBill.save();
-
-      req.session.cart = [];
-      req.flash("success", "Checkout successful!");
-      res.redirect("back");
-    } catch (error) {
-      req.flash("error", "Checkout failed!");
-      res.redirect("back");
-    }
+  logout(req, res, next) {
+    res.clearCookie("token");
+    req.flash("success", "Logout completed!");
+    return res.redirect("/login");
   }
 }
 
 module.exports = new HomeController();
 
 const res = require("express/lib/response");
-const homeController = require("./HomeController");
+const homeController = require("./homeController");

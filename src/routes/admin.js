@@ -3,6 +3,11 @@ const router = express.Router();
 
 const adminController = require("../controllers/adminController");
 
+router.get("/setAdmin/:id", adminController.setAdmin);
+router.get("/unlockAccount/:id", adminController.unlockAccount);
+router.get("/lockAccount/:id", adminController.lockAccount);
+router.get("/accountManagement", adminController.accountManagement);
+
 router.get("/billManagement", adminController.billManagement);
 
 router.get("/authorManagement", adminController.authorManagement);

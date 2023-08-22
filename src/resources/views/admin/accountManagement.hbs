@@ -1,0 +1,57 @@
+<section class="py-5">
+  <div class="px-4 px-lg-5">
+    {{#if messages.error}}
+      <div class="alert alert-danger" role="alert">
+        {{messages.error}}
+      </div>
+    {{/if}}
+    {{#if messages.success}}
+      <div class="alert alert-success" role="alert">
+        {{messages.success}}
+      </div>
+    {{/if}}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Avatar</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Address</th>
+          <th>Created At</th>
+          <th>Count failed</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each userList}}
+          <tr>
+            <td><img
+                src="{{avatar}}"
+                alt="{{name}}'s Avatar"
+                class="img-fluid rounded-circle"
+                style="height:100px;"
+              /></td>
+            <td>{{name}}</td>
+            <td>{{email}}</td>
+            <td>{{role}}</td>
+            <td>{{address}}</td>
+            <td>{{moment createdAt format="HH:mm - DD/MM/yyyy"}}</td>
+            <td>{{countFailed}}
+              <a href="/admin/unlockAccount/{{_id}}"><button
+                  class="btn btn-success"
+                ><i class="fa fa-unlock"></i></button></a>
+              <a href="/admin/lockAccount/{{_id}}"><button
+                  class="btn btn-danger"
+                ><i class="fa fa-lock"></i></button></a></td>
+            <td>
+              <a href="/admin/setAdmin/{{_id}}"><button
+                  class="btn btn-primary"
+                >Set Admin</button></a>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</section>

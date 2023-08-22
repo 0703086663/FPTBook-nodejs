@@ -1,5 +1,7 @@
 const homeRouter = require("./home");
 const adminRouter = require("./admin");
+const cartRouter = require("./cart");
+const userRouter = require("./user");
 
 function route(app) {
   app.use((req, res, next) => {
@@ -15,6 +17,8 @@ function route(app) {
     next();
   });
 
+  app.use("/user", userRouter);
+  app.use("/cart", cartRouter);
   app.use("/admin", adminRouter);
   app.use("/", homeRouter);
 }

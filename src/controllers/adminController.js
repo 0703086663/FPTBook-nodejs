@@ -193,6 +193,75 @@ class AdminController {
       })
       .catch(next);
   }
+
+  unlockAccount(req, res, next) {
+    const userId = req.params.id;
+
+    User.findOneAndUpdate({ _id: userId }, { countFailed: 0 })
+      .then((user) => {
+        if (!user) {
+          req.flash("error", "User not found!");
+          return res.redirect("back");
+        }
+        req.flash("success", "User locked successfully!");
+        return res.redirect("back");
+      })
+      .catch((err) => {
+        req.flash("error", "There was an error when locking the user!");
+        return res.redirect("back");
+      });
+  }
+
+  lockAccount(req, res, next) {
+    const userId = req.params.id;
+
+    User.findOneAndUpdate({ _id: userId }, { countFailed: 6 })
+      .then((user) => {
+        if (!user) {
+          req.flash("error", "User not found!");
+          return res.redirect("back");
+        }
+        req.flash("success", "User locked successfully!");
+        return res.redirect("back");
+      })
+      .catch((err) => {
+        req.flash("error", "There was an error when locking the user!");
+        return res.redirect("back");
+      });
+  }
+
+  accountManagement(req, res, next) {
+    User.find()
+      .then((userList) => {
+        return res.render("admin/accountManagement", {
+          title: "Account Management",
+          user: req.user,
+          userList: multipleMongooseToObject(userList),
+        });
+      })
+      .catch((err) => {
+        req.flash("error", "There was an error when get in page!");
+        return res.redirect("back");
+      });
+  }
+
+  setAdmin(req, res, next) {
+    const userId = req.params.id;
+
+    User.findOneAndUpdate({ _id: userId }, { role: "Admin" })
+      .then((user) => {
+        if (!user) {
+          req.flash("error", "User not found!");
+          return res.redirect("back");
+        }
+        req.flash("success", "Set admin successfully!");
+        return res.redirect("back");
+      })
+      .catch((err) => {
+        req.flash("error", "There was an error when adjust the user!");
+        return res.redirect("back");
+      });
+  }
 }
 
 module.exports = new AdminController();
